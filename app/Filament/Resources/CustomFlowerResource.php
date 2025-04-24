@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomFlowerResource extends Resource
 {
-    protected static ?string $navigationGroup = 'Custom Product';
+    protected static ?string $navigationGroup = ' 📁 Custom Product';
     protected static ?string $model = CustomFlower::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

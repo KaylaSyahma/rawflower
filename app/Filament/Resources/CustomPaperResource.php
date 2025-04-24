@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomPaperResource extends Resource
 {
-    protected static ?string $navigationGroup = 'Custom Product';
+    protected static ?string $navigationGroup = ' 📁 Custom Product';
     protected static ?string $model = CustomPaper::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
