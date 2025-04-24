@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class CustomFlower extends Model
 {
     use HasFactory;
 
-    protected $table = 'categories';
+    protected $table = 'custom_flowers';
 
     protected $fillable = [
-        'name',
-        'slug',
+        'nama',
+        'image',
+        'deskripsi',
+        'harga',
+        'available'
     ];
-
 }
