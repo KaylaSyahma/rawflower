@@ -10,7 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Forms\Components\FileUpload;
-
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -32,20 +31,24 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Repeater::make('productImages')
+                    Forms\Components\Repeater::make('productImages')
                     ->label('Foto Produk')
                     ->relationship('productImages')
                     ->schema([
                         Forms\Components\FileUpload::make('image')
-                            ->label('Gambar')
+                            ->label('')
                             ->directory('products')
                             ->image()
                             ->required(),
                     ])
+                    ->grid(1) // <<< Ini penting, biar dalam satu baris
+                    ->columns([
+                        'default' => 3, // berapa banyak gambar sejajar, atur sendiri bro
+                    ])
+                    ->columnSpanFull()
                     ->collapsible()
                     ->defaultItems(1)
-                    ->createItemButtonLabel('Tambah Gambar')
-                    ->columnSpanFull(),
+                    ->createItemButtonLabel('Tambah Gambar'),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(255),
