@@ -52,6 +52,11 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\CheckboxList::make('colors')
+                    ->label('Warna Produk')
+                    ->relationship('colors', 'name')
+                    ->columns(4)
+                    ->required(),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('original_price')
@@ -64,6 +69,7 @@ class ProductResource extends Resource
                     ->required(),
                 Forms\Components\Toggle::make('status')
                     ->required(),
+                    
             ]);
     }
 
@@ -79,6 +85,18 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('colors')
+                    ->label('Warna Produk')
+                    ->getStateUsing(function ($record) {
+                        // Ambil nama warna dari relasi colors
+                        $colors = $record->colors->pluck('name');
+                        
+                        // Gabungkan nama warna dengan koma, kecuali yang terakhir
+                        return $colors->implode(function ($name, $key) use ($colors) {
+                            return $key === $colors->count() - 1 ? $name : $name . ', '; // Jangan tambahkan koma untuk warna terakhir
+                        });
+                    })
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('original_price')
                     ->numeric()
                     ->sortable(),
@@ -89,6 +107,7 @@ class ProductResource extends Resource
                     ->boolean(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
+                
             ])
             ->filters([
                 //

@@ -18,7 +18,7 @@ class CustomPaperResource extends Resource
     protected static ?string $navigationGroup = ' 📁 Custom Product';
     protected static ?string $model = CustomPaper::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder';
 
     public static function form(Form $form): Form
     {

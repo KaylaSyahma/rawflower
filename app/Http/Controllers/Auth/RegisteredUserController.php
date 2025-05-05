@@ -42,10 +42,21 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
+
+        $token = $user->createToken('api_token')->plainTextToken;
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ], 201);
+
         event(new Registered($user));
 
         Auth::login($user);
 
-        return to_route('dashboard');
+        return to_route('index');
     }
 }

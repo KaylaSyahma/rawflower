@@ -28,4 +28,9 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+    public function colors()
+    {   // product punya banyak warna, nama pivot table, fk product_id, fk color_id
+        return $this->belongsToMany(Color::class, 'product_color', 'product_id', 'color_id');
+    }
 }

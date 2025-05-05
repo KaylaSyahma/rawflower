@@ -19,7 +19,7 @@ class BlogResource extends Resource
 {
     protected static ?string $model = Blog::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-paint-brush';
+    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
 
     public static function form(Form $form): Form
     {
