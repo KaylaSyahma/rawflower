@@ -22,14 +22,8 @@ class ColorResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255)
-                    ->live() // ini supaya langsung update slug pas ngetik name
-                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Str::slug($state))),
-                    
-                Forms\Components\TextInput::make('slug')
-                    ->required()
                     ->maxLength(255),
-
+                    
                 Forms\Components\FileUpload::make('image')
                     ->image()
                     ->directory('colors'), // ini supaya file gambarnya rapih masuk ke folder 'colors'
@@ -64,6 +58,8 @@ class ColorResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                // ini buat delete
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

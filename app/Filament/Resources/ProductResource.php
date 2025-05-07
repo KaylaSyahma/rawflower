@@ -41,17 +41,9 @@ class ProductResource extends Resource
                             ->image()
                             ->required(),
                     ])
-                    ->grid(1) // <<< Ini penting, biar dalam satu baris
-                    ->columns([
-                        'default' => 3, // berapa banyak gambar sejajar, atur sendiri bro
-                    ])
-                    ->columnSpanFull()
                     ->collapsible()
                     ->defaultItems(1)
                     ->createItemButtonLabel('Tambah Gambar'),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\CheckboxList::make('colors')
                     ->label('Warna Produk')
                     ->relationship('colors', 'name')
@@ -68,6 +60,8 @@ class ProductResource extends Resource
                 Forms\Components\Toggle::make('popular')
                     ->required(),
                 Forms\Components\Toggle::make('status')
+                    ->label('available')
+                    ->default(true) 
                     ->required(),
                     
             ]);
@@ -106,6 +100,7 @@ class ProductResource extends Resource
                 Tables\Columns\IconColumn::make('popular')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('status')
+                    ->label('Available')
                     ->boolean(),
                 
             ])
