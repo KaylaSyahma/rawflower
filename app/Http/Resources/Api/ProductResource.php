@@ -25,11 +25,9 @@ class ProductResource extends JsonResource
             'status' => $this->status,
     
             // Include relasi
-            'category' => $this->whenLoaded('category', function () {
-                return $this->category->name;
-            }),
+            'category' => $this->whenLoaded('category', fn () => $this->category?->name),
     
-            'images' => $this->whenLoaded('productImages', fn () => $this->productImages->pluck('image')),
+            'images' => $this->productImages->map(fn ($img) => asset('storage/' . $img->image)),
             'colors' => $this->whenLoaded('colors', fn () => $this->colors->pluck('name')),
 
         ];

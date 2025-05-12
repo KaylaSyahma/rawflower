@@ -34,12 +34,6 @@ class BlogResource extends Resource
                 Forms\Components\Textarea::make('isi')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('excerpt')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\DateTimePicker::make('published_at'),
             ]);
     }
