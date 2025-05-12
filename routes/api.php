@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Resources\Api\ProductResource;
+use App\Models\Product;
 use Illuminate\Http\Request;
 // use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +29,11 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthenticatedSessionControll
 Route::get('/category/{category:slug}', [CategoryController::class, 'show']);
 Route::apiResource('/categories', CategoryController::class);
 
-Route::apiResource('/products', ProductController::class);
+// buat yg popular
+Route::get('/products/popular', [ProductController::class, 'popular']);
 //buat detail
-Route::get('/products/{id}/detail', [ProductController::class, 'showDetail']);
+Route::get('/products/{id}/detail', [ProductController::class, 'showDetail'])->name('detail');
+// api resource harus ditaro di akhir!!!!!!
+Route::apiResource('/products', ProductController::class);
+
+Route::apiResource('/blogs', BlogController::class);
