@@ -32,8 +32,6 @@ class SliderResource extends Resource
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->rules(['dimensions:width=1263,height=458'])
-                    ->helperText('Ukuran harus 1263 x 458 piksel')
                     ->directory('sliders'),
                 Forms\Components\Toggle::make('status')
                     ->label('Visible')  // Label yang muncul di form
