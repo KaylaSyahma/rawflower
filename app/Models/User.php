@@ -26,6 +26,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'email',
         'password',
         'role_as', // role user (0: user biasa, 1: admin)
+        'phone'
     ];
 
     /**
@@ -49,6 +50,7 @@ class User extends Authenticatable implements FilamentUser, HasName
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role_as' => 'integer', // biar role langsung dikonversi jadi integer
+            'phone' => 'integer'
         ];
     }
 

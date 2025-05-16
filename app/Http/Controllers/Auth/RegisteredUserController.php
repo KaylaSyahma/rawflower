@@ -22,6 +22,7 @@ class RegisteredUserController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|lowercase|email|unique:users',
             'password' => ['required', Rules\Password::defaults()],
+            'phone' => 'required|integer|max:12'
         ]);
 
         // Enkripsi password
