@@ -7,16 +7,20 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SliderController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\API\APIAuthController; // <- tambahin ini buat login via API
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// ✅ AUTH SANCTUM: login & register versi API
+// Route::post('/register', [APIAuthController::class, 'register']); // opsional, kalo kamu bikin juga
+Route::post('/login', [APIAuthController::class, 'login']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::post('/register', [RegisteredUserController::class, 'register']);
-Route::post('/login', [AuthenticatedSessionController::class, 'login']);
+// Route::post('/login', [AuthenticatedSessionController::class, 'login']);
 
 // route untuk mendapatkan data user yang sedang login (authenticated User)
 Route::middleware('auth:sanctum')->group(function () {
@@ -38,11 +42,10 @@ Route::apiResource('/slider', SliderController::class);
 Route::get('/category/{category:slug}', [CategoryController::class, 'show']);
 Route::apiResource('/categories', CategoryController::class);
 
-// buat yg popular
+// ✅ PRODUCT
 Route::get('/products/popular', [ProductController::class, 'popular']);
-//buat detail
 Route::get('/products/{id}/detail', [ProductController::class, 'showDetail'])->name('detail');
-// api resource harus ditaro di akhir!
 Route::apiResource('/products', ProductController::class);
 
+// ✅ BLOG
 Route::apiResource('/blogs', BlogController::class);
