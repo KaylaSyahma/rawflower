@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // ✅ AUTH SANCTUM: login & register versi API
-Route::post('/register', [APIAuthController::class, 'register']); // opsional, kalo kamu bikin juga
+Route::post('/register', [RegisteredUserController::class, 'register']); // opsional, kalo kamu bikin juga
 Route::post('/login', [APIAuthController::class, 'login']);
 
 // ✅ Route untuk dapetin data user yg udah login (via token)
