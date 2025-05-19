@@ -50,8 +50,17 @@ class User extends Authenticatable implements FilamentUser, HasName
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role_as' => 'integer', // biar role langsung dikonversi jadi integer
-            'phone' => 'integer'
+            'phone' => 'string'
         ];
+    }
+
+    /**
+     * Relasi ke model Cart
+     * Setiap user cuma punya satu cart aktif
+     */
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
     }
 
     /**
