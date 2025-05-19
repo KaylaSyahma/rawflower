@@ -10,24 +10,25 @@ use App\Models\User;
 class APIAuthController extends Controller
 {
     public function register(Request $request)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|string|min:8',
-    ]);
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+        ]);
 
-    $user = User::create([
-        ...$validated,
-        'password' => bcrypt($validated['password']),
-    ]);
+        $user = User::create([
+            ...$validated,
+            'password' => bcrypt($validated['password']),
+        ]);
 
-    return response()->json([
-        'access_token' => $user->createToken('auth_token')->plainTextToken,
-        'token_type' => 'Bearer',
-        'user' => $user,
-    ]);
-}
+        return response()->json([
+            'access_token' => $user->createToken('auth_token')->plainTextToken,
+            'token_type' => 'Bearer',
+            'user' => $user,
+        ]);
+    }
+    
      public function login(Request $request)
     {
         $request->validate([
