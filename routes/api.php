@@ -11,16 +11,12 @@ use App\Http\Controllers\API\APIAuthController; // <- tambahin ini buat login vi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// ✅ AUTH SANCTUM: login & register versi API
-// Route::post('/register', [APIAuthController::class, 'register']); // opsional, kalo kamu bikin juga
-Route::post('/login', [APIAuthController::class, 'login']);
-
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::post('/register', [RegisteredUserController::class, 'register']);
-// Route::post('/login', [AuthenticatedSessionController::class, 'login']);
+Route::post('/login', [APIAuthController::class, 'login']);
 
 // route untuk mendapatkan data user yang sedang login (authenticated User)
 Route::middleware('auth:sanctum')->group(function () {
