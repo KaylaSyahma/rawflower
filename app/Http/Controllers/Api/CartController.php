@@ -14,6 +14,12 @@ class CartController extends Controller
     // GET /api/cart
     public function index()
     {
+         $userId = Auth::id();
+
+    if (!$userId) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+    
         // line ini sampe 28 buat ngefilter user jadi tiap user cart nya beda beda
         // hindarin firstOrCreate() waktu pake relasi yang butuh with() atau ada kemungkinan kondisi kompleks. Karena dia bisa ngeluarin data user lain
         $cart = Cart::where('user_id', Auth::id())

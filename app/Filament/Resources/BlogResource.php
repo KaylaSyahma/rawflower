@@ -47,7 +47,8 @@ class BlogResource extends Resource
                 ->schema([
                     Tables\Columns\Layout\Split::make([
                         // Gambar
-                        Tables\Columns\ImageColumn::make('image')
+                        Tables\Columns\ImageColumn::make('image_url')
+                            ->label('Image')
                             ->height('150px') // atau bisa juga pakai angka: '200px'
                             ->width('120px') // atau bisa juga pakai angka: '200px'
                             ->extraImgAttributes([
