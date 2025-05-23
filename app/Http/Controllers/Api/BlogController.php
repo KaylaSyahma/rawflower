@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 class BlogController extends Controller
 {
     public function index()
-    {
-        $blogs = Blog::latest()->take(3)->get(); // ambil 3 terbaru
-        return response()->json($blogs);
-    }
+{
+    $blogs = Blog::latest()->get();
+
+    return response()->json($blogs);
+}
 
     public function show($id)
     {
