@@ -38,7 +38,10 @@ class CustomFlowerResource extends Resource
                     Forms\Components\TextInput::make('harga')
                     ->numeric()
                     ->required(),
-    
+                Forms\Components\Select::make('category_flower_id')
+                    ->label('Tipe Bunga')
+                    ->relationship('category', 'nama') // relasi ke model CategoryFlower, field 'nama'
+                    ->required(),
                 Forms\Components\Toggle::make('available')
                     ->label('Tersedia')
                     ->default(true),
@@ -51,6 +54,10 @@ class CustomFlowerResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('category.nama')
+                    ->label('Kategori')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('deskripsi'),
                 Tables\Columns\TextColumn::make('harga'),
                 Tables\Columns\ToggleColumn::make('available')

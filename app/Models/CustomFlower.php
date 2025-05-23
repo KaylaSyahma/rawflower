@@ -16,6 +16,11 @@ class CustomFlower extends Model
         'image',
         'deskripsi',
         'harga',
-        'available'
+        'available',
+        'category_flower_id'
     ];
+
+    public function category(){
+        return $this->belongsTo(CategoryFlower::class, 'category_flower_id');
+    }
 }
