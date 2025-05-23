@@ -12,34 +12,61 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
     // GET /api/cart
-   public function index()
-{
-    $userId = Auth::id();
+    public function index()
+    {
+         $userId = Auth::id();
 
     if (!$userId) {
         return response()->json(['message' => 'Unauthorized'], 401);
     }
+    
+        // line ini sampe 28 buat ngefilter user jadi tiap user cart nya beda beda
+        // hindarin firstOrCreate() waktu pake relasi yang butuh with() atau ada kemungkinan kondisi kompleks. Karena dia bisa ngeluarin data user lain
+        $cart = Cart::where('user_id', Auth::id())
+            ->where('status', 'active')
+            ->with('items.product.productImages', 'items.product.category')
+            ->first();
 
-    $cart = Cart::with('items.product')
-        ->firstOrCreate(
-            ['user_id' => $userId, 'status' => 'active']
-        );
+        if (!$cart) {
+            $cart = Cart::create([
+                'user_id' => Auth::id(),
+                'status'  => 'active'
+            ]);
+            $cart->load('items.product.productImages', 'items.product.category');
+        }
 
-    $items = $cart->items ?? collect(); // biar gak error pas map
+        return response()->json([
+            'id' => $cart->id,
+            'items' => $cart->items->map(function ($item) {
+                $product = $item->product;
+                $images = $product->productImages->pluck('image')->map(function ($image) {
+                    return asset('storage/' . $image);
+                });
 
-    return response()->json([
-        'id'    => $cart->id,
-        'items' => $items->map(function ($item) {
-            return [
-                'id'        => $item->id,
-                'product'   => $item->product,
-                'quantity'  => $item->quantity,
-                'price'     => $item->price,
-                'subtotal'  => $item->quantity * $item->price,
-            ];
-        }),
-    ]);
-}
+                return [
+                    'id'       => $item->id,
+                    'product'  => [
+                        'id'          => $product->id,
+                        'category'      => [
+                            'id'   => $product->category->id,
+                            'name' => $product->category->name,
+                        ],
+                        'name'        => $product->name,
+                        'slug'        => $product->slug,
+                        'description' => $product->description,
+                        'original_price' => $product->original_price,
+                        'quantity'    => $product->quantity,
+                        'popular'     => $product->popular,
+                        'status'      => $product->status,
+                        'images'      => $images, // cuma ini yang dimunculin dari relasi
+                    ],
+                    'quantity' => $item->quantity,
+                    'price'    => $item->price,
+                    'subtotal' => $item->quantity * $item->price,
+                ];
+            }),
+        ]);
+    }
 
     // POST /api/cart/add
     public function add(Request $request)
@@ -49,9 +76,16 @@ class CartController extends Controller
             'quantity'   => 'required|integer|min:1',
         ]);
 
-        $cart = Cart::firstOrCreate(
-            ['user_id' => Auth::id(), 'status' => 'active']
-        );
+        $cart = Cart::where('user_id', Auth::id())
+            ->where('status', 'active')
+            ->first();
+
+        if (!$cart) {
+            $cart = Cart::create([
+                'user_id' => Auth::id(),
+                'status'  => 'active'
+            ]);
+        }
 
         $product = Product::findOrFail($request->product_id);
 
@@ -59,7 +93,7 @@ class CartController extends Controller
             ['product_id' => $product->id]
         );
         $item->quantity = ($item->exists ? $item->quantity : 0) + $request->quantity;
-        $item->price    = $product->price;
+        $item->price    = $product->original_price;
         $item->save();
 
         return response()->json(['message' => 'Product added to cart']);

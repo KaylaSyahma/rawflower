@@ -26,10 +26,15 @@ class RegisteredUserController extends Controller
         ]);
 
         // Enkripsi password
-        $validated['password'] = Hash::make($validated['password']);
+        // $validated['password'] = Hash::make($validated['password']);
 
         // Buat user baru
-        $user = User::create($validated);
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'phone' => $validated['phone'],
+        ]);
 
         // Buat token dari Laravel Sanctum
         $token = $user->createToken('api_token')->plainTextToken;

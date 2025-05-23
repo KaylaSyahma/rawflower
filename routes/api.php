@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\SliderController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\API\APIAuthController; // <- tambahin ini buat login via API
+use App\Http\Controllers\Api\CustomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,8 @@ Route::apiResource('/slider', SliderController::class);
 
 Route::get('/category/{category:slug}', [CategoryController::class, 'show']);
 Route::apiResource('/categories', CategoryController::class);
+
+Route::get('/custom', [CustomController::class, 'index']);
 
 // ✅ PRODUCT
 Route::get('/products/popular', [ProductController::class, 'popular']);
