@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 class SliderController extends Controller
 {
     public function index(){
-        $sliders = Slider::all();
+        $sliders = Slider::all()
+        -> where('status', true);
         return SliderResource::collection($sliders);
     }
 }
