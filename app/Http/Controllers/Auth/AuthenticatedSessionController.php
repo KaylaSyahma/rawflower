@@ -27,14 +27,33 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
+    // public function store(LoginRequest $request): RedirectResponse
+    // {
+    //     $request->authenticate();
+
+    //     $request->session()->regenerate();
+
+    //     dd(auth()->user());
+
+    //     return redirect()->to(auth()->user()->role_as == 1
+    //     ? route('filament.admin.pages.dashboard', [], true)
+    //     : route('index')
+    //     );
+    // }
+
     public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+{
+    $request->authenticate();
+    $request->session()->regenerate();
 
-        $request->session()->regenerate();
+    $user = auth()->user();
 
-        return redirect()->intended(auth()->user()->role_as == 1 ? route('filament.admin.auth.login', [], true) : route('index'));
+    if ($user->role_as == 1) {
+        return redirect()->to('/admin'); // ini default route ke filament
     }
+
+    return redirect('/'); // user biasa ke landing page
+}
 
     /**
      * Destroy an authenticated session.

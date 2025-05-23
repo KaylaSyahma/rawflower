@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-
 class Blog extends Model
 {
     use HasFactory;
@@ -39,5 +38,11 @@ class Blog extends Model
                 $blog->excerpt = Str::limit(strip_tags($blog->isi), 150);
             }
         });
+    }
+
+    // accessor untuk image
+    public function getImageUrlAttribute()
+    {
+        return asset('storage/' . $this->image);
     }
 }

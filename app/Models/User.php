@@ -40,6 +40,19 @@ class User extends Authenticatable implements FilamentUser, HasName
     ];
 
     /**
+     * The attributes that should be visible for serialization.
+     *
+     * @var list<string>
+     */
+    protected $visible = [
+        'id',
+        'name',
+        'email',
+        'role_as',
+        'phone',
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

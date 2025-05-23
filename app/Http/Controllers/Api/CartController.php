@@ -12,26 +12,34 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
     // GET /api/cart
-    public function index()
-    {
-        $cart = Cart::with('items.product')
-            ->firstOrCreate(
-                ['user_id' => Auth::id(), 'status' => 'active']
-            );
+   public function index()
+{
+    $userId = Auth::id();
 
-        return response()->json([
-            'id'    => $cart->id,
-            'items' => $cart->items->map(function ($item) {
-                return [
-                    'id'        => $item->id,
-                    'product'   => $item->product,
-                    'quantity'  => $item->quantity,
-                    'price'     => $item->price,
-                    'subtotal'  => $item->quantity * $item->price,
-                ];
-            }),
-        ]);
+    if (!$userId) {
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
+
+    $cart = Cart::with('items.product')
+        ->firstOrCreate(
+            ['user_id' => $userId, 'status' => 'active']
+        );
+
+    $items = $cart->items ?? collect(); // biar gak error pas map
+
+    return response()->json([
+        'id'    => $cart->id,
+        'items' => $items->map(function ($item) {
+            return [
+                'id'        => $item->id,
+                'product'   => $item->product,
+                'quantity'  => $item->quantity,
+                'price'     => $item->price,
+                'subtotal'  => $item->quantity * $item->price,
+            ];
+        }),
+    ]);
+}
 
     // POST /api/cart/add
     public function add(Request $request)

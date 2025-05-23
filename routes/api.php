@@ -45,3 +45,4 @@ Route::apiResource('/products', ProductController::class);
 
 // ✅ BLOG
 Route::apiResource('/blogs', BlogController::class);
+Route::get('/blogs/{id}', [BlogController::class, 'show']);
