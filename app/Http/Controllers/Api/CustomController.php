@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\CustomResource;
+use App\Models\CategoryFlower;
 use App\Models\CustomBow;
 use App\Models\CustomFlower;
 use App\Models\CustomPaper;
@@ -13,14 +14,18 @@ class CustomController extends Controller
 {
     public function index()
     {
-        $flowers = CustomResource::collection(CustomFlower::all());
-        $bows = CustomResource::collection(CustomBow::all());
-        $papers = CustomResource::collection(CustomPaper::all());
+        $flowerCategories = CategoryFlower::with('flowers')->get();
+        $flowerData = [];
+
+        foreach ($flowerCategories as $category) {
+            // Gunakan nama kategori sebagai key, bisa juga lowercase atau snake_case kalau mau konsisten
+            $flowerData[$category->nama] = CustomResource::collection($category->flowers);
+        }
 
         return response()->json([
-            'flowers' => $flowers,
-            'bows' => $bows,
-            'papers' => $papers,
+            'flowers' => $flowerData, // ini nested object
+            'bows' => CustomResource::collection(CustomBow::all()),
+            'papers' => CustomResource::collection(CustomPaper::all()),
         ]);
     }
 }
