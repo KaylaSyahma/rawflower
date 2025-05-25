@@ -24,7 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return response()->json($request->user());
     });
-
+    
+    Route::get('/custom', [CustomController::class, 'index']);
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart/add', [CartController::class, 'add']);
     Route::patch('/cart/update/{itemId}', [CartController::class, 'update']);
